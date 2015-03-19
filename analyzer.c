@@ -32,7 +32,11 @@ static struct block_device_operations analyzer_fops = {
 static void analyzer_make_request(struct request_queue *q, struct bio *bio) {
 	struct bio_vec bvec;
 	struct bvec_iter iter;
-	printk(KERN_ALERT "analyzer_make_request offset=%lx len=%x\n", bio->bi_iter.bi_sector << SECTOR_SHIFT, bio->bi_iter.bi_size); // %%%
+	printk(KERN_ALERT "analyzer_make_request %c mapping=%p offset=%lx len=%x\n",
+		bio_data_dir(bio) == READ ? 'R' : 'W',
+		bio_page(bio)->mapping,
+		bio->bi_iter.bi_sector << SECTOR_SHIFT,
+		bio->bi_iter.bi_size); // %%%
 	bio_for_each_segment(bvec, bio, iter) {
 		char *buffer = __bio_kmap_atomic(bio, iter);
 		if (bio_data_dir(bio) == READ) {
