@@ -16,7 +16,7 @@ drop-caches:
 	echo 1 | sudo tee /proc/sys/vm/drop_caches > /dev/null
 
 watch:
-	sudo less -S /var/log/kern.log
+	sudo less -S +F /var/log/kern.log
 
 clear-log:
 	true | sudo tee /var/log/kern.log
